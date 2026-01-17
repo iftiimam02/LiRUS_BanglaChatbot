@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>LiRUS — Bangla Voice Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="header">
+      <h1>🧠 LiRUS: Your Bangla Voice Assistant</h1>
+      <button id="theme-toggle" title="Toggle Theme">🌗</button>
+    </div>
+
+    <div id="chat-box"></div>
+
+    <div class="input-section">
+      <input type="text" id="user-input" placeholder="✍️ লিখুন বা 🎙️ বলুন..." />
+      <button id="send-btn">Send</button>
+      <button id="mic-btn">🎙️</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const input = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const micBtn = document.getElementById('mic-btn');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Add message
+    function addMessage(sender, text) {
+      const msg = document.createElement('div');
+      msg.className = sender === 'user' ? 'user-msg' : 'bot-msg';
+      msg.innerText = text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Send text to backend
+    async function sendMessage() {
+      const message = input.value.trim();
+      if (!message) return;
+      addMessage('user', '🧍‍♂️: ' + message);
+      input.value = '';
+
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await response.json();
+      addMessage('bot', '🤖: ' + data.reply);
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+
+    // 🎙️ Voice Input
+    micBtn.addEventListener('click', () => {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('Speech Recognition not supported in this browser.');
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'bn-BD';
+      recognition.interimResults = false;
+      recognition.start();
+
+      micBtn.textContent = '🎧 Listening...';
+      recognition.onresult = event => {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        micBtn.textContent = '🎙️';
+        sendMessage();
+      };
+      recognition.onerror = () => micBtn.textContent = '🎙️';
+      recognition.onend = () => micBtn.textContent = '🎙️';
+    });
+
+    // 🌗 Theme toggle
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      themeToggle.textContent = isLight ? '🌞' : '🌗';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+
+    // Keep saved theme
+    window.onload = () => {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light') {
+        document.body.classList.add('light-theme');
+        themeToggle.textContent = '🌞';
+      }
+    };
+  </script>
+</body>
+</html>

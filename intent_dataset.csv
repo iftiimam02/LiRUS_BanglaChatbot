@@ -1,0 +1,33 @@
+text,intent
+হ্যালো,hello
+হাই,hello
+আপনি কেমন আছেন,hello
+তুমি কে,who_are_you
+তোমার নাম কী,who_are_you
+তোমাকে কে বানিয়েছে,creator
+তোমার প্রজেক্ট কী,project
+LiRUS কী,project
+আইওটি কী,iot
+রোবোটিক্স কী,robotics
+এআই কী,ai
+এজ এআই কী,edge_ai
+ওষুধ খাওয়ার সময়,medicine
+আমাকে সাহায্য করো,help
+আমার প্রজেক্টে সাহায্য করো,help
+এখন সময় কত,time
+আজ কী দিন,date
+আমি ভালো আছি,feeling_good
+আমার মন খারাপ,feeling_bad
+ধন্যবাদ,thank_you
+ধন্যবাদ লিরাস,thank_you
+বিদায়,goodbye
+বিদায় লিরাস,goodbye
+আমি সাহায্য চাই,help
+আমি অসুস্থ,medicine
+তুমি কেমন আছো,who_are_you
+আমি ইফতি,creator
+তুমি কি ইফতি কে চেনো,creator
+তুমি কি রোবট বানাতে পারো,robotics
+রোবট বানাতে কী লাগে,robotics
+আইওটি প্রজেক্টে কী লাগে,iot
+মেশিন লার্নিং কী,ai

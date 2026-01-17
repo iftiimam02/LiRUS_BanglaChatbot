@@ -1,0 +1,10 @@
+transformers
+datasets
+trl
+accelerate
+peft
+bitsandbytes
+gtts
+vosk
+sounddevice
+flask
